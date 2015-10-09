@@ -1,0 +1,12 @@
+dat<-read.table("household_power_consumption.txt",sep=";",header=TRUE,colClasses=c("character","character","numeric","numeric","numeric","numeric","numeric","numeric","numeric"),na.strings = "?")
+dat$Date<-as.Date(strptime(dat$Date,"%d/%m/%Y"))
+dat<-dat[dat$Date<="2007-02-02" & dat$Date >= "2007-02-01",]
+dat$timetemp <- paste(dat$Date, dat$Time)
+dat$Time <- strptime(dat$timetemp, format = "%Y-%m-%d %H:%M:%S")
+dat$Global_active_power<-as.numeric(dat$Global_active_power)
+plot(dat$Time,dat$Sub_metering_1,type="l",ylab="Energy sub metering",xlab="")
+lines(dat$Time,dat$Sub_metering_2,col="red",type="l")
+lines(dat$Time,dat$Sub_metering_3,col="blue",type="l")
+legend("topright",c("Sub_metering_1","Sub_metering_2","Sub_metering_3"),lty=1,col=c("black","red","blue"))
+dev.copy(png,'plot3.png')
+dev.off()
